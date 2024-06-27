@@ -2,6 +2,7 @@ package com.legato.task.controllers;
 
 import com.legato.task.entities.Task;
 import com.legato.task.services.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class TaskController {
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
-    public void createTask(@PathVariable Long userId, @RequestBody Task task) {
+    public void createTask(@PathVariable Long userId, @Valid @RequestBody Task task) {
         Task createdTask = taskService.createTask(userId, task);
     }
 
