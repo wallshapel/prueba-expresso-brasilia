@@ -1,5 +1,6 @@
 package com.legato.task.services;
 
+import com.legato.task.dto.TaskDTO;
 import com.legato.task.entities.Task;
 import com.legato.task.entities.User;
 import com.legato.task.exceptions.ResourceNotFoundException;
@@ -25,6 +26,7 @@ public class TaskService implements ITaskService {
         // Guardar la tarea en la base de datos
         return taskRepository.save(task);
     }
+
 
     public List<Task> getTasksByUserId(Long userId) {
         userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));

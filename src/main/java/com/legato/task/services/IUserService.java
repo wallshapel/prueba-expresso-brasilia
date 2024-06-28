@@ -1,11 +1,11 @@
 package com.legato.task.services;
 
-import com.legato.task.entities.User;
+import com.legato.task.dto.UserDTO;
 
 import java.util.List;
 
 public interface IUserService {
-    User createUser(User user);
-    List<User> getAllUsers();
-    User getUserById(Long id);
+    UserDTO createUser(UserDTO userDto);
+    List<UserDTO> getAllUsers();
+    UserDTO getUserById(Long id);
 }

@@ -1,14 +1,14 @@
 package com.legato.task.components;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class Mapper {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public <D, T> D toDto(T entity, Class<D> dtoClass) { // <D, T> D Significa que recibe un DTO cualquiera y una Entidad cualquiera y devuelve un DTO
         return modelMapper.map(entity, dtoClass);
