@@ -39,4 +39,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ErrorMessage message = new ErrorMessage("error", exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorMessage> usernameAlreadyExistException(AlreadyExistException exception) {
+        ErrorMessage message = new ErrorMessage("error", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+    }
 }

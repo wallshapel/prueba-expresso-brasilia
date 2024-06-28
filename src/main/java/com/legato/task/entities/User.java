@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 @Getter
 @Setter
 public class User {
@@ -20,11 +20,11 @@ public class User {
 
     @NotBlank
     @Size(min = 2, max = 50)
+    @Column(unique = true)
     private String username;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore  // Evita la serialización recursiva
     private List<Task> tasks;
-
 
 }

@@ -4,6 +4,7 @@ import com.legato.task.components.Mapper;
 import com.legato.task.dto.UserDTO;
 import com.legato.task.entities.User;
 import com.legato.task.exceptions.ResourceNotFoundException;
+import com.legato.task.helpers.UniqueUsernameValidator;
 import com.legato.task.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final Mapper mapper;
+    private final UniqueUsernameValidator uniqueUsernameValidator;
 
     @Override
     @Transactional
     public UserDTO createUser(UserDTO userDto) {
+        uniqueUsernameValidator.validateUniqueUsername(userDto.getUsername());
         User user = mapper.toEntity(userDto, User.class);
         User savedUser = userRepository.save(user);
         return mapper.toDto(savedUser, UserDTO.class);
