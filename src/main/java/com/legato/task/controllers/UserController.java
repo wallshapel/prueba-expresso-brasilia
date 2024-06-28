@@ -4,7 +4,7 @@ import com.legato.task.dto.ApiResponse;
 import com.legato.task.entities.User;
 import com.legato.task.services.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @PostMapping
     @Transactional

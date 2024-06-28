@@ -5,17 +5,17 @@ import com.legato.task.entities.User;
 import com.legato.task.exceptions.ResourceNotFoundException;
 import com.legato.task.repositories.TaskRepository;
 import com.legato.task.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TaskService implements ITaskService {
-    @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private UserRepository userRepository;
+
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     public Task createTask(Long userId, Task task) {
         User user = userRepository.findById(userId)

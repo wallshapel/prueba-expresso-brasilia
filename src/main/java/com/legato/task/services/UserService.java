@@ -3,15 +3,16 @@ package com.legato.task.services;
 import com.legato.task.entities.User;
 import com.legato.task.exceptions.ResourceNotFoundException;
 import com.legato.task.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService implements IUserService {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     public User createUser(User user) {
         return userRepository.save(user);
