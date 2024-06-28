@@ -22,8 +22,8 @@ public class TaskController {
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
-    public void createTask(@PathVariable Long userId, @Valid @RequestBody Task task) {
-        Task createdTask = taskService.createTask(userId, task);
+    public Task createTask(@PathVariable Long userId, @Valid @RequestBody Task task) {
+        return taskService.createTask(userId, task);
     }
 
     @GetMapping

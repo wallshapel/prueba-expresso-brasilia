@@ -21,8 +21,8 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
-    public void createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 
     @GetMapping
