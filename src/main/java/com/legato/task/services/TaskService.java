@@ -8,7 +8,6 @@ import com.legato.task.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 
 @Service
@@ -19,13 +18,10 @@ public class TaskService {
     private UserRepository userRepository;
 
     public Task createTask(Long userId, Task task) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
-
         // Asignar el usuario a la tarea
         task.setUser(user);
-
         // Guardar la tarea en la base de datos
         return taskRepository.save(task);
     }
@@ -40,17 +36,22 @@ public class TaskService {
     }
 
     public Task updateTaskStatusByUserId(Long userId, Long taskId, boolean completed) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
-
         Task taskToUpdate = user.getTasks().stream()
                 .filter(task -> task.getId().equals(taskId))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + taskId + " for user " + userId));
-
         taskToUpdate.setCompleted(completed);
         return taskRepository.save(taskToUpdate);
+    }
+
+    public void deleteTaskByUserId(Long userId, Long taskId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+        taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + taskId));
+        taskRepository.deleteById(taskId);
     }
 
 }

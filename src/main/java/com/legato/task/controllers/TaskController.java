@@ -41,14 +41,18 @@ public class TaskController {
     }
 
     @PutMapping("/user-id/{userId}/task-id/{taskId}")
-    public ResponseEntity<Task> updateTaskStatusByUserId(
-            @PathVariable Long userId,
-            @PathVariable Long taskId,
-            @RequestBody Map<String, Boolean> requestBody) {
-
+    @Transactional
+    public ResponseEntity<Task> updateTaskStatusByUserId(@PathVariable Long userId, @PathVariable Long taskId, @RequestBody Map<String, Boolean> requestBody) {
         boolean completed = requestBody.get("completed");
         Task updatedTask = taskService.updateTaskStatusByUserId(userId, taskId, completed);
         return ResponseEntity.ok(updatedTask);
+    }
+
+    @DeleteMapping("/user-id/{userId}/task-id/{taskId}")
+    @Transactional
+    public ResponseEntity<Void> deleteTaskByUserId(@PathVariable Long userId, @PathVariable Long taskId) {
+        taskService.deleteTaskByUserId(userId, taskId);
+        return ResponseEntity.noContent().build();
     }
 
 }
