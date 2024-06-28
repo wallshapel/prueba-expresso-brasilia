@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.legato.task.controllers")
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -31,5 +31,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             errors.put(error.getField(), error.getDefaultMessage());
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorMessage> illegalArgumentException(IllegalArgumentException exception) {
+        ErrorMessage message = new ErrorMessage("error", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 }
