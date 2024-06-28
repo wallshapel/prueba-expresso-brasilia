@@ -1,5 +1,6 @@
 package com.legato.task.controllers;
 
+import com.legato.task.dto.ApiResponse;
 import com.legato.task.entities.Task;
 import com.legato.task.services.TaskService;
 import jakarta.validation.Valid;
@@ -20,39 +21,42 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping("/{userId}")
-    @ResponseStatus(HttpStatus.CREATED)
     @Transactional
-    public Task createTask(@PathVariable Long userId, @Valid @RequestBody Task task) {
-        return taskService.createTask(userId, task);
+    public ResponseEntity<ApiResponse<Task>> createTask(@PathVariable Long userId, @Valid @RequestBody Task task) {
+        Task createdTask = taskService.createTask(userId, task);
+        ApiResponse<Task> response = new ApiResponse<>("success", "Task created successfully", createdTask);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
     @Transactional(readOnly = true)
-    public ResponseEntity<List<Task>> getAllTasks() {
+    public ResponseEntity<ApiResponse<List<Task>>> getAllTasks() {
         List<Task> allTasks = taskService.getAllTasks();
-        return ResponseEntity.ok(allTasks);
+        ApiResponse<List<Task>> response = new ApiResponse<>("success", "All tasks retrieved successfully", allTasks);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/user-id/{userId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<List<Task>> getTasksByUserId(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<List<Task>>> getTasksByUserId(@PathVariable Long userId) {
         List<Task> tasks = taskService.getTasksByUserId(userId);
-        return ResponseEntity.ok(tasks);
+        ApiResponse<List<Task>> response = new ApiResponse<>("success", "Tasks retrieved successfully", tasks);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/user-id/{userId}/task-id/{taskId}")
     @Transactional
-    public ResponseEntity<Task> updateTaskStatusByUserId(@PathVariable Long userId, @PathVariable Long taskId, @RequestBody Map<String, Boolean> requestBody) {
+    public ResponseEntity<ApiResponse<Task>> updateTaskStatusByUserId(@PathVariable Long userId, @PathVariable Long taskId, @RequestBody Map<String, Boolean> requestBody) {
         boolean completed = requestBody.get("completed");
         Task updatedTask = taskService.updateTaskStatusByUserId(userId, taskId, completed);
-        return ResponseEntity.ok(updatedTask);
+        ApiResponse<Task> response = new ApiResponse<>("success", "Task status updated successfully", updatedTask);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/user-id/{userId}/task-id/{taskId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public ResponseEntity<Void> deleteTaskByUserId(@PathVariable Long userId, @PathVariable Long taskId) {
+    public void deleteTaskByUserId(@PathVariable Long userId, @PathVariable Long taskId) {
         taskService.deleteTaskByUserId(userId, taskId);
-        return ResponseEntity.noContent().build();
     }
-
 }

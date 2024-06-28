@@ -1,5 +1,6 @@
 package com.legato.task.controllers;
 
+import com.legato.task.dto.ApiResponse;
 import com.legato.task.entities.User;
 import com.legato.task.services.UserService;
 
@@ -19,26 +20,26 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     @Transactional
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<ApiResponse<User>> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        ApiResponse<User> response = new ApiResponse<>("success", "User created successfully", createdUser);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
     @Transactional(readOnly = true)
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        ApiResponse<List<User>> response = new ApiResponse<>("success", "All users retrieved successfully", users);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
+        ApiResponse<User> response = new ApiResponse<>("success", "User retrieved successfully", user);
+        return ResponseEntity.ok(response);
     }
-
 }
-
-
